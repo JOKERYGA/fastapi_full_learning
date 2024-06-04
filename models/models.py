@@ -1,6 +1,6 @@
+from typing import Any, Dict
 from datetime import datetime, timezone
-from typing import Any, Dict, List
-from sqlalchemy.orm import Mapped, mapped_column, relationship, DeclarativeBase
+from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 from sqlalchemy import Boolean, ForeignKey, Integer, String, TIMESTAMP, JSON
 
 
@@ -10,15 +10,15 @@ class Base(DeclarativeBase):
 
 class Role(Base):
     __tablename__ = "role"
-    
+
     id: Mapped[int] = mapped_column(primary_key=True,)
     name: Mapped[str] = mapped_column(String(30), nullable=False)
-    permissions: Mapped[Dict[str, Any]] = mapped_column(JSON)
+    permissions: Mapped[Dict[str, Any]] = mapped_column(JSON, nullable=True)
 
 
 class User(Base):
     __tablename__ = "user"
-    
+
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(String, nullable=False)
     username: Mapped[str] = mapped_column(String, nullable=False)

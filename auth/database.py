@@ -1,10 +1,10 @@
 from datetime import datetime, timezone
-from typing import AsyncGenerator
+from typing import Any, AsyncGenerator, Dict
 
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyUserDatabase
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
-from sqlalchemy import Boolean, ForeignKey, Integer, String, TIMESTAMP
+from sqlalchemy import JSON, Boolean, ForeignKey, Integer, String, TIMESTAMP
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -18,13 +18,15 @@ class Base(DeclarativeBase):
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
+    __tablename__ = "user"
+    
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(String, nullable=False)
     username: Mapped[str] = mapped_column(String, nullable=False)
     registered_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True), default=datetime.now(timezone.utc)
         )
-    role_id: Mapped[int] = mapped_column(Integer, ForeignKey('role.id'))
+    role_id: Mapped[int] = mapped_column(Integer, ForeignKey("role.id"))
     hashed_password: Mapped[str] = mapped_column(
         String(length=1024), nullable=False
     )
@@ -35,6 +37,14 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     is_verified: Mapped[bool] = mapped_column(
         Boolean, default=False, nullable=False
     )
+
+
+class Role(Base):
+    __tablename__ = "role"
+
+    id: Mapped[int] = mapped_column(primary_key=True,)
+    name: Mapped[str] = mapped_column(String(30), nullable=False)
+    permissions: Mapped[Dict[str, Any]] = mapped_column(JSON, nullable=True)
 
 
 engine = create_async_engine(DATABASE_URL)
