@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from typing import List, Optional
+from typing import List, Optional, Union
 from pydantic import BaseModel, Field
 import uvicorn
 from fastapi import FastAPI
@@ -35,7 +35,8 @@ class User(BaseModel):
     id: int
     role: str
     name: str
-    degree: Optional[List[Degree]] = []
+    degree: List[Degree] | None = None
+        # Union[List[Degree], None] = None
 
 
 @app.get("/users/{user_id}", response_model=List[User])
