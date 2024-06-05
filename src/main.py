@@ -2,7 +2,7 @@
 import uvicorn
 from fastapi import Depends, FastAPI
 from src.auth.base_config import auth_backend, fastapi_users
-from src.auth.manager import get_user_manager
+from src.auth.models import User
 from src.auth.schemas import UserCreate, UserRead
 
 app = FastAPI(
