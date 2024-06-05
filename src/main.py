@@ -1,18 +1,12 @@
-from fastapi_users import FastAPIUsers
+
 import uvicorn
 from fastapi import Depends, FastAPI
-from auth.auth import auth_backend
-from auth.database import User
-from auth.manager import get_user_manager
-from auth.schemas import UserCreate, UserRead
+from src.auth.base_config import auth_backend, fastapi_users
+from src.auth.manager import get_user_manager
+from src.auth.schemas import UserCreate, UserRead
 
 app = FastAPI(
     title="Salary"
-)
-
-fastapi_users = FastAPIUsers[User, int](
-    get_user_manager,
-    [auth_backend],
 )
 
 app.include_router(
