@@ -1,9 +1,12 @@
-
+import sys
 import uvicorn
-from fastapi import Depends, FastAPI
-from src.auth.base_config import auth_backend, fastapi_users
-from src.auth.models import User
+from fastapi import FastAPI
+
+from src.auth.base_config import fastapi_users, auth_backend
 from src.auth.schemas import UserCreate, UserRead
+from src.operations.router import router as router_operation
+
+sys.path.append("c:/documents/GIT/fastapi_full_learning/src")
 
 app = FastAPI(
     title="Salary"
@@ -22,12 +25,13 @@ app.include_router(
     tags=["auth"],
 )
 
-current_user = fastapi_users.current_user()
 
-@app.get("/protected-route")
-def protected_route(user: User = Depends(current_user)):
-    return f"Hello, {user.username}"
+app.include_router(
+    router_operation
+)
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", reload=True)
+    uvicorn.run("src.main:app", reload=True)
+
+# uvicorn src.main:app --reload
