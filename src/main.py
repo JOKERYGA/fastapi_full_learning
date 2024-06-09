@@ -10,6 +10,7 @@ from src.auth.schemas import UserCreate, UserRead
 from src.operations.router import router as router_operation
 
 
+# подключение к БД(расходуется оперативка) и кэширование через Redis
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     redis = aioredis.from_url("redis://localhost", encoding="utf8", decode_response=True)

@@ -1,5 +1,4 @@
 import time
-from asyncpg import DataError
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi_cache.decorator import cache
 from sqlalchemy import insert, select
@@ -28,10 +27,10 @@ async def get_specific_operations(
         query = select(Operation).where(Operation.type == operation_type).limit(2)
         result = await session.execute(query)
         return {"status": "success", "data": result.mappings().all(), "details": None}
-    except DataError as exc:
+    except ValueError as exc_val:
         raise HTTPException(
             status_code=500, detail={"status": "error", "data": None, "detail": str(exc)}
-        ) from exc
+        ) from exc_val
     except Exception as exc:
         # Передать ошибку разработчикам 
         raise HTTPException(
