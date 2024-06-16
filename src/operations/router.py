@@ -27,10 +27,10 @@ async def get_specific_operations(
         query = select(Operation).where(Operation.type == operation_type).limit(2)
         result = await session.execute(query)
         return {"status": "success", "data": result.mappings().all(), "details": None}
-    except ValueError as exc_val:
+    except ValueError as exc:
         raise HTTPException(
             status_code=500, detail={"status": "error", "data": None, "detail": str(exc)}
-        ) from exc_val
+        ) from exc
     except Exception as exc:
         # Передать ошибку разработчикам 
         raise HTTPException(

@@ -9,7 +9,6 @@ from src.auth.base_config import fastapi_users, auth_backend
 from src.auth.schemas import UserCreate, UserRead
 from src.operations.router import router as router_operation
 
-
 # подключение к БД(расходуется оперативка) и кэширование через Redis
 @asynccontextmanager
 async def lifespan(app: FastAPI):
