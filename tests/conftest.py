@@ -23,8 +23,6 @@ async_session_maker = sessionmaker(
     engine_test, class_=AsyncSession, expire_on_commit=False
 )
 
-Base.metadata.bind = engine_test
-
 
 async def override_get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_maker() as session:
