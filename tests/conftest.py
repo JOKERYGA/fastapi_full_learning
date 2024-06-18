@@ -50,7 +50,6 @@ def event_loop(request):
     loop.close()
 
 
-
 client = TestClient(app)
 
 @pytest.fixture(scope="session")

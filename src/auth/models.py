@@ -11,6 +11,7 @@ metadata = MetaData()
 
 class Role(Base):
     __tablename__ = "role"
+    __table_args__ = {"schema": "public"}
 
     id: Mapped[int] = mapped_column(primary_key=True,)
     name: Mapped[str] = mapped_column(String(30), nullable=False)
