@@ -8,7 +8,7 @@ from src.database import get_async_session
 from src.operations.models import Operation
 from src.operations.schemas import OperationCreate
 
-router = APIRouter(prefix="/operations", tags=["operations"])
+router = APIRouter(prefix="/operations", tags=["Operation"])
 
 
 @router.get("/long_operation")
@@ -32,7 +32,6 @@ async def get_specific_operations(
             status_code=500, detail={"status": "error", "data": None, "detail": str(exc)}
         ) from exc
     except Exception as exc:
-        # Передать ошибку разработчикам 
         raise HTTPException(
             status_code=500, detail={"status": "error", "data": None, "detail": str(exc)}
         ) from exc
@@ -46,8 +45,8 @@ async def add_specific_operations(
     # stmt - Запрос на вставку. В документации так описывается (statement?))
     stmt = insert(Operation).values(**new_operation.model_dump())
     await session.execute(stmt)
-    # Для выполнения условия аттомарности - исполнить, например паралельно в таблицу логов добавить запись и все
-    # действия были исполнены
+    # Для выполнения условия аттомарности(либо все либо ничего) - исполнить, например паралельно в
+    # таблицу логов добавить запись и чтобы все действия были исполнены
     await session.commit()
     return {"status": "success"}
 

@@ -11,7 +11,6 @@ metadata = MetaData()
 
 class Role(Base):
     __tablename__ = "role"
-    __table_args__ = {"schema": "public"}
 
     id: Mapped[int] = mapped_column(primary_key=True,)
     name: Mapped[str] = mapped_column(String(30), nullable=False)
@@ -27,7 +26,7 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     registered_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True), default=datetime.now(timezone.utc)
         )
-    role_id: Mapped[int] = mapped_column(Integer, ForeignKey("role.id"))
+    role_id: Mapped[int] = mapped_column(Integer, ForeignKey("role.id"), default=1)
     hashed_password: Mapped[str] = mapped_column(
         String(length=1024), nullable=False
     )
