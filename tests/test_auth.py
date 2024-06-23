@@ -8,7 +8,7 @@ from .conftest import async_session_maker
 @pytest.mark.asyncio
 async def test_add_role():
     async with async_session_maker() as session:
-        stmt = insert(Role).values(id=1, name="admin", permissions=None)
+        stmt = insert(Role).values(id=2, name="admin", permissions=None)
         await session.execute(stmt)
         await session.commit()
 

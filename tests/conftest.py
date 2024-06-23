@@ -35,17 +35,21 @@ app.dependency_overrides[get_async_session] = override_get_async_session
 @pytest.fixture(autouse=True, scope='session')
 async def prepare_database():
     async with engine_test.begin() as conn:
+        print("Creating all tables")
         await conn.run_sync(Base.metadata.create_all)
     yield
     async with engine_test.begin() as conn:
+        print("Dropping] all tables")
         await conn.run_sync(Base.metadata.drop_all)
 
 
 #SETUP
-@pytest.fixture(scope="session")
-def event_loop(request):
-    """Create an instance of the dafault event loop for test case"""
-    loop = asyncio.get_event_loop_policy().new_event_loop()
+@pytest.fixture(scope='session')
+def event_loop():
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
     yield loop
     loop.close()
 

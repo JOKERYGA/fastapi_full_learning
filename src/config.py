@@ -3,7 +3,7 @@ import os
 
 
 class Settings(BaseSettings):
-    MODE: str = "DEV"
+    MODE: str
 
     DB_HOST: str
     DB_PORT: int
